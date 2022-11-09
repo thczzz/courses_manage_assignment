@@ -12,13 +12,18 @@ def index(request):
         min_credits = request.GET.get("min_credits")
         if min_credits:
             min_credits = int(min_credits)
-            student_pins = request.GET.get("student_pins").strip().split(',')
+            student_pins = []
+            pins = request.GET.get("student_pins")
+            pins_filter = {}
+            if pins != "":
+                student_pins = pins.strip().split(',')
+                pins_filter = {"pin__in": student_pins}
             start_date = datetime.strptime(request.GET.get("start_date"), '%Y-%m-%d')
             end_date = datetime.strptime(request.GET.get("end_date"), '%Y-%m-%d')
             output_format = request.GET.get("output_format")
 
             eligible_students = Student.objects.filter(
-                student_courses_xref__completion_date__range=(start_date, end_date), pin__in=student_pins).annotate(
+                student_courses_xref__completion_date__range=(start_date, end_date), **pins_filter).annotate(
                 total_credits=Sum("student_courses_xref__course__credit")
             ).filter(total_credits__gte=min_credits).distinct()
 
