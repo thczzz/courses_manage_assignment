@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body>
+
+        <table class="table table-bordered table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Student</th>
+              <th scope="col">Total Credits</th>
+<!--              <th scope="col">Last</th>-->
+<!--              <th scope="col">Handle</th>-->
+            </tr>
+          </thead>
+          <tbody>
+            {% for student_info, courses in ready_data.items %}
+                <tr>
+                    <th scope="col">{{ student_info.1 }} {{ student_info.2 }}</th>
+                    <th scope="col">{{ student_info.3 }}</th>
+                    {% if forloop.first %}
+                        <th scope="col">Course</th>
+                        <th scope="col">Credit</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Instructor</th>
+                    {% endif %}
+                </tr>
+                {% for course in courses %}
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td>{{ course.course__name }}</td>
+                      <td>{{ course.course__credit }}</td>
+                      <td>{{ course.course__total_time }}</td>
+                      <td>{{ course.course__instructor__first_name }} {{ course.course__instructor__last_name }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+
+    </body>
+</html>
